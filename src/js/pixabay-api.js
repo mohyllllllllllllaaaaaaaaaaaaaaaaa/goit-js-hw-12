@@ -7,21 +7,22 @@ import "izitoast/dist/css/iziToast.min.css";
 const BASE_URL = 'https://pixabay.com/api/';
 const API_KEY = '48823979-822a726f00604f1f8a353c21f';
 
-export function fetchImages(searchQuery) {
+export async function fetchImages(searchQuery) {
+    const params = {
+        key: API_KEY,
+        q: searchQuery, 
+        image_type: "photo", 
+        orientation: "horizontal",
+        safesearch: true,
+         mode: 'cors',
+         per_page: 40,
+         page: 1
+    };
     const loader = document.querySelector(".loader");
     loader.style.display = "block";
-
-    return axios.get(BASE_URL, {
-        params: {
-            key: API_KEY,
-            q: searchQuery, 
-            image_type: "photo", 
-            orientation: "horizontal",
-            safesearch: true,
-             mode: 'cors'
-        }
-    })
-    .then((response) => {
+ 
+    const response = await axios.get(BASE_URL, {params})
+    try {
         const images = response.data.hits;
         
         if (images.length === 0) {
@@ -33,12 +34,14 @@ export function fetchImages(searchQuery) {
             });
         }
         return images;
-    })
-    .catch((error) => {
-        loader.style.display = "none";
+    }
+    catch(error)  {
+        
         iziToast.error({ message: 'Sorry. Please try again!'}); 
         console.error("Fetch error:", error);
         return [];
-    });
+    }finally{
+        loader.style.display = "none";
+    };
 
 }

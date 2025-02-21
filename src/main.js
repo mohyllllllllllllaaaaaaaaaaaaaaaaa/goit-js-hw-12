@@ -7,11 +7,9 @@ import "izitoast/dist/css/iziToast.min.css";
 
 const form = document.querySelector("#form");
 const loader = document.querySelector(".loader");
-
-form.addEventListener("submit", (event) => {
+const text = e.target.elements.text.value.trim();
+form.addEventListener("submit", async (event) => {
     event.preventDefault();
-    const text = event.target.elements.text.value.trim();
-
     if (!text || /^\d+$/.test(text)) {
         iziToast.error({ message: "Please enter a search query!",
             position: "topRight",
@@ -19,19 +17,16 @@ form.addEventListener("submit", (event) => {
          });
         return;
     }
-
     loader.style.display = "block"; 
-
-    fetchImages(text)
-        .then((images) => {
+ try{ const images = await fetchImages(text);
                 renderImages(images);
-            })
+            }
     
-        .catch(() => {
+        catch(error){
             iziToast.error({ message: "There was an error fetching the images." });
-        })
-        .finally(() => {
+        }
+        finally{
             loader.style.display = "none"; 
-        });
-        form.reset();
+            form.reset();
+        };      
 });
