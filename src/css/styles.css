@@ -16,3 +16,62 @@
 @import url('./badges.css');
 @import url('./back-link.css');
 @import url('./footer.css');
+.loader {
+  border: 16px solid #f3f3f3;
+  border-top: 16px solid #db8734;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  animation: spin 2s linear infinite;
+  margin-left: 654px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+button{
+  border-radius: 8px;
+padding: 8px 16px;
+width: 91px;
+height: 40px;
+background: #4e75ff;
+border: 1px solid #808080;
+}
+button:hover{
+  background: #6c8cff;
+}
+input{
+  border-radius: 4px;
+width: 272px;
+height: 40px;
+border: 1px solid #808080;
+}
+input:hover{
+  border: 1px solid #000;
+}
+#form {
+  display: flex;
+  margin-left: 534px;
+}
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  list-style: none;
+}
+.gallery-item {
+  flex-basis: calc(33.333% - 10px);
+}
+.gallery-image {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.info {
+  display: flex;
+  gap: 13px;
+}
+.info p{
+  display: inline-block;
+}
