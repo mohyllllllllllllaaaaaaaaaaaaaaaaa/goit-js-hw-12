@@ -27,15 +27,6 @@ export async function fetchImages(query, page) {
         const response = await axios.get(BASE_URL, { params });
         const images = response.data.hits;
         const totalHits = response.data.totalHits;
-
-        if (images.length === 0) {
-            iziToast.error({
-                position: 'topRight',
-                color: 'red',
-                title: 'Error',
-                message: 'Sorry, there are no images matching your search query. Please try again!',
-            });
-        }
         return { images, totalHits };
     } catch (error) {
         iziToast.error({ message: 'Sorry. Please try again!' });

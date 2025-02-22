@@ -21,11 +21,16 @@ form.addEventListener("submit", async (event) => {
     query = event.target.elements.text.value.trim();
     page = 1;
     gallery.innerHTML = ""; 
-    hiddenBtnLoadMore();
-    if (!query) {
-        iziToast.error({ message: "Please enter a search query!", position: "topRight", color: 'yellow' });
+   
+    
+    if (!query ||  /^\d+$/.test(query.trim())) {
+        iziToast.error({ message: "Please enter a search query!",
+            position: "topRight",
+            color: 'yellow',
+         });
         return;
     }
+      hiddenBtnLoadMore();
     loader.style.display = "block"; 
     try {
         const { images, totalHits: newTotalHits } = await fetchImages(query, page);
