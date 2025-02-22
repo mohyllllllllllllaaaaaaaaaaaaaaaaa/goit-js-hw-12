@@ -4,9 +4,10 @@
   | default @import url()
   |============================
 */
-/* Common styles */
+
 @import url('./reset.css');
-@import url('./base.css');
+/*Common styles */
+ @import url('./base.css');
 @import url('./container.css');
 @import url('./animations.css');
 
@@ -16,6 +17,7 @@
 @import url('./badges.css');
 @import url('./back-link.css');
 @import url('./footer.css');
+
 .loader {
   border: 16px solid #f3f3f3;
   border-top: 16px solid #db8734;
@@ -46,27 +48,38 @@ input{
 width: 272px;
 height: 40px;
 border: 1px solid #808080;
+margin-bottom: 24px;
 }
 input:hover{
   border: 1px solid #000;
+}
+section{
+  margin-left: 156px;
+  margin-right: 156px;
 }
 #form {
   display: flex;
   margin-left: 534px;
 }
 .gallery {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px; 
   list-style: none;
+  padding: 0;
 }
+
 .gallery-item {
-  flex-basis: calc(33.333% - 10px);
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  width: 360px;
+  height: 200px;
+  gap: 24px;
 }
+
 .gallery-image {
-  width: 100%;
-  height: auto;
-  display: block;
+  width: 340px;
+  height: 160px;
+display: block;
 }
 .info {
   display: flex;
@@ -74,4 +87,14 @@ input:hover{
 }
 .info p{
   display: inline-block;
+  font-size: small;
 }
+.hidden {
+  display: none;
+}
+.load-more{
+  margin-left: 704px;
+  width: 120px;
+}
+
+  

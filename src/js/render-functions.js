@@ -3,8 +3,6 @@ import "simplelightbox/dist/simple-lightbox.min.css";
 
 const gallery = document.querySelector(".gallery");
 export function renderImages(images) {
-    gallery.innerHTML = '';
-
     const markup = images.map(({ webformatURL, largeImageURL, tags, likes, views, comments, downloads }) => 
         `<a href="${largeImageURL}" class="gallery-item">
             <img src="${webformatURL}" alt="${tags}" class="gallery-image" />
@@ -17,9 +15,10 @@ export function renderImages(images) {
         </a>`
     ).join("");
 
-    gallery.innerHTML = markup;
+    gallery.insertAdjacentHTML('beforeend', markup);
     const lightbox = new SimpleLightbox(".gallery a", {
         captionsData: "alt",
         captionDelay: 250,
-    }).refresh();
+    });
+    lightbox.refresh();
 }
