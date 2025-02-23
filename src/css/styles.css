@@ -20,7 +20,7 @@
 
 .loader {
   border: 16px solid #f3f3f3;
-  border-top: 16px solid #db8734;
+  border-top: 16px solid #4e75ff;
   border-radius: 50%;
   width: 20px;
   height: 20px;
@@ -32,6 +32,12 @@
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+.loader-container{display: flex;
+  justify-content: center;
+  margin-top: 45px;}
+
+      
+
 button{
   border-radius: 8px;
 padding: 8px 16px;
@@ -95,6 +101,8 @@ display: block;
 .load-more{
   margin-left: 604px;
   width: 120px;
+  margin-bottom: 34px;
+  margin-top: 34px;
 }
 
   

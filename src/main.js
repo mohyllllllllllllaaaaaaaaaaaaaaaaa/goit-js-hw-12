@@ -15,36 +15,6 @@ let page = 1;
 let per_page = 40;
 let totalHits = 0;
 
-
-form.addEventListener("submit", async (event) => {
-    event.preventDefault();
-    query = event.target.elements.text.value.trim();
-    page = 1;
-    gallery.innerHTML = ""; 
-   
-    
-    if (!query ||  /^\d+$/.test(query.trim())) {
-        iziToast.error({ message: "Please enter a search query!",
-            position: "topRight",
-            color: 'yellow',
-         });
-        return;
-    }
-      hiddenBtnLoadMore();
-    loader.style.display = "block"; 
-    try {
-        const { images, totalHits: newTotalHits } = await fetchImages(query, page);
-        totalHits = newTotalHits;
-        renderImages(images);
-    } catch (error) {
-        iziToast.error({ message: "There was an error fetching the images.", position: "topRight", color: "red" });
-    } finally {
-        loader.style.display = "none"; 
-        form.reset();
-    }
-    showBtnLoadMore();
-});
-
 function showBtnLoadMore() {
     btnLoadMore.classList.remove('hidden');
 }
@@ -54,7 +24,14 @@ function hiddenBtnLoadMore() {
 }
 
 function showEndMessage() {
-    iziToast.info({ position: 'topRight', message: "Sorry, you've reached the end of search results.", color: 'red' });
+    iziToast.info({ position: 'bottomCenter', message: "Sorry, you've reached the end of search results.", color: 'red' });
+}
+function showLoader(afterElement){
+    loader.style.display = "block"; 
+    afterElement.insertAdjacentElement("afterend", loader);
+}
+function hiddenLoader(){
+    loader.style.display = "none"; 
 }
 
 function scrollToNewGallery() {
@@ -64,24 +41,72 @@ function scrollToNewGallery() {
       const itemHeight = rect.height;
       window.scrollBy({ top:  itemHeight * 2, behavior: 'smooth',});
     };}
+    function checkPage(){
+        const totalPage = Math.ceil(totalHits / per_page);
+        if(page >= totalPage){
+            hiddenBtnLoadMore();
+            showEndMessage();
+        }else{
+            showBtnLoadMore();
+        }
+    };
+
+    form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        query = event.target.elements.text.value.trim();
+        page = 1;
+        gallery.innerHTML = ""; 
+       
+        
+        if (!query ||  /^\d+$/.test(query.trim())) {
+            iziToast.error({ message: "Please enter a search query!",
+                position: "topRight",
+                color: 'yellow',
+             });
+            return;
+        }
+          hiddenBtnLoadMore();
+          showLoader(form);
+        try {
+            const { images, totalHits: newTotalHits } = await fetchImages(query, page);
+            totalHits = newTotalHits;
+            if(images.length === 0){
+                iziToast.error({
+                    message: "No images found", position: "topRight", color: "red"
+                });
+                return;
+            }
+            renderImages(images);
+            checkPage();
+        } catch (error) {
+            iziToast.error({ message: "There was an error fetching the images.", position: "topRight", color: "red" });
+            hiddenBtnLoadMore();
+        } finally {
+            hiddenLoader();
+            form.reset();
+        }
+    });
 
 btnLoadMore.addEventListener('click', async () => {
     page += 1; 
-    loader.style.display = "block";
+    showLoader(btnLoadMore);
     try {
         const { images } = await fetchImages(query, page);
+        if (images.length === 0) {
+            hiddenBtnLoadMore();
+            return;
+        }
         renderImages(images);
         scrollToNewGallery();
-      
-        if (gallery.children.length >= totalHits) {
-            hiddenBtnLoadMore();
-            showEndMessage();
-        }
-       
+        checkPage();  
     } catch (error) {
-        console.error("Fetch error:", error);
+        iziToast.error({
+            message: "Error loading more images.", position: "topRight", color: "red",
+        });
+        hiddenBtnLoadMore();
     } finally {
-        loader.style.display = "none";
+        hiddenLoader();
     }
 });
+
  

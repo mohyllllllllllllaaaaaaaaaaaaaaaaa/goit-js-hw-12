@@ -20,9 +20,6 @@ export async function fetchImages(query, page) {
         page: page,
     };
 
-    const loader = document.querySelector(".loader");
-    loader.style.display = "block";
-
     try {
         const response = await axios.get(BASE_URL, { params });
         const images = response.data.hits;
@@ -32,7 +29,5 @@ export async function fetchImages(query, page) {
         iziToast.error({ message: 'Sorry. Please try again!' });
         console.error("Fetch error:", error);
         return { images: [], totalHits: 0 };
-    } finally {
-        loader.style.display = "none";
-    }
+    } 
 }
